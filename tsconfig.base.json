@@ -15,7 +15,9 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@monorepo-microservices/interfaces": ["libs/interfaces/src/index.ts"]
+            "@monorepo-microservices/interfaces": [
+                "libs/interfaces/src/index.ts"
+            ]
         }
     },
     "exclude": ["node_modules", "tmp"]
