@@ -1,12 +1,26 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { IUser } from '@monorepo-microservices/interfaces';
+import { ConfigService } from '@nestjs/config';
+
+
+export class RegisterDto {
+    email: string;
+    password: string;
+    displayName?: string;
+}
+
+export class LoginDto {
+    email: string;
+    password: string;
+}
 
 @Controller('auth')
 export class AuthController {
 
     constructor(
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
+        private readonly configService: ConfigService,
     ) {
     }
 
@@ -21,15 +35,9 @@ export class AuthController {
 
         return this.authService.login(id);
     }
-}
 
-export class RegisterDto {
-    email: string;
-    password: string;
-    displayName?: string;
-}
-
-export class LoginDto {
-    email: string;
-    password: string;
+    @Get()
+    check () {
+        return this.configService.get('JWT_SECRET');
+    }
 }

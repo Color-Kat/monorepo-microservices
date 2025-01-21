@@ -1,4 +1,4 @@
-import { MongooseModuleAsyncOptions, MongooseModuleOptions } from '@nestjs/mongoose';
+import { MongooseModuleAsyncOptions } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 export const getMongoConfig = (): MongooseModuleAsyncOptions => ({
@@ -20,5 +20,5 @@ const getMongoString = (configService: ConfigService) =>
     configService.get('MONGO_PORT') +
     '/' +
     configService.get('MONGO_DATABASE') +
-    '?authSource' +
+    '?authSource=' +
     configService.get('MONGO_AUTH_DATABASE');

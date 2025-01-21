@@ -1,0 +1,17 @@
+### Register
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+    "email": "coco@co.co",
+    "password": "coco12"
+}
+
+### Login
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+"email": "coco@co.co",
+"password": "coco12"
+}

@@ -7,13 +7,13 @@ import { getMongoConfig } from './configs/mongo.config';
 
 @Module({
     imports: [
-        UserModule,
-        AuthModule,
         ConfigModule.forRoot({
             isGlobal: true,
             envFilePath: 'envs/.account.env',
         }),
-        MongooseModule.forRootAsync(getMongoConfig())
+        MongooseModule.forRootAsync(getMongoConfig()),
+        UserModule,
+        AuthModule,
     ],
     controllers: [],
     providers: [],
