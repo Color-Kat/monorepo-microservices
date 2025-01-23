@@ -11,10 +11,21 @@ const run = async () => {
 
         channel.consume(queue.queue, (message) => {
             if(!message) return;
-
             console.log(`Received message: ${message.content.toString()}`);
-            console.log(message);
 
+            if(message.properties.replyTo) {
+                console.log('Replying to: ' + message.properties.replyTo);
+
+                // Send response to the exclusive queue from replyTo
+                // With the correlationId from the request
+                channel.sendToQueue(
+                    message.properties.replyTo,
+                    Buffer.from('This is response from queue ' + message.properties.replyTo),
+                    {
+                        correlationId: message.properties.correlationId
+                    }
+                )
+            }
             channel.ack(message);
         });
     } catch (error) {
