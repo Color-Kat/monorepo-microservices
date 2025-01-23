@@ -8,9 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 export class UserRepository {
     constructor(
         @InjectModel(User.name) private readonly userModel: Model<User>
-    ) {
-        console.log(User.name, this.toString());
-    }
+    ) {}
 
     async createUser(user: UserEntity) {
         const newUser = new this.userModel(user);
