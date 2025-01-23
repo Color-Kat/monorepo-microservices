@@ -15,6 +15,9 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
+            "@monorepo-microservices/contracts": [
+                "libs/contracts/src/index.ts"
+            ],
             "@monorepo-microservices/interfaces": [
                 "libs/interfaces/src/index.ts"
             ]
