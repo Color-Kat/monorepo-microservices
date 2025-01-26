@@ -16,13 +16,13 @@ export class AuthController {
     async register(
         @Body() dto: AccountRegister.Request
     ): Promise<AccountRegister.Response> {
-
+        return;
     }
 
     @Post('login')
     async login(
         @Body() dto: AccountLogin.Request
     ): Promise<AccountLogin.Response> {
-
+        return;
     }
 }

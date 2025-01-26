@@ -14,7 +14,7 @@ export class UserController {
         //
     }
 
-    @Get('ingo')
+    @Get('info')
     @UseGuards(JWTAuthGuard)
     async getUserInfo(
         @UserId() userId: string
