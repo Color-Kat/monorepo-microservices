@@ -2,14 +2,15 @@ import { UserEntity } from '../entities/user.entity';
 import { RMQService } from 'nestjs-rmq';
 import { PurchaseState } from '@monorepo-microservices/interfaces';
 import { BuyCourseSagaState } from './buy-course.state';
+import { BuyCourseSagaStateStarted } from './buy-course.steps';
 
 export class BuyCourseSaga {
     private state: BuyCourseSagaState;
 
     constructor(
-        private user: UserEntity,
-        private courseId: string,
-        private readonly rmqService: RMQService // Pass it manually
+        public user: UserEntity,
+        public courseId: string,
+        public readonly rmqService: RMQService // Pass it manually
     ) {}
 
     getState() {
@@ -19,6 +20,7 @@ export class BuyCourseSaga {
     setState(state: PurchaseState, courseId: string) {
         switch (state) {
             case PurchaseState.Started:
+                this.state = new BuyCourseSagaStateStarted();
                 break;
             case PurchaseState.WaitingForPayment:
                 break;
