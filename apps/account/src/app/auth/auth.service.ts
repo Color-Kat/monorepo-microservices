@@ -22,7 +22,7 @@ export class AuthService {
      * @param displayName
      */
     async register({ email, password, displayName }: AccountRegister.Request): Promise<{user: IUser}> {
-        const oldUser = await this.userRepository.findUser(email);
+        const oldUser = await this.userRepository.findUserByEmail(email);
         if (oldUser) throw new Error('This user already exists');
 
         const newUserEntity = await new UserEntity({
@@ -38,7 +38,7 @@ export class AuthService {
     }
 
     async validateUser({ email, password }: AccountLogin.Request): Promise<{id: string}> {
-        const user = await this.userRepository.findUser(email);
+        const user = await this.userRepository.findUserByEmail(email);
         if (!user) throw new Error('Wrong email or password');
 
         const userEntity = new UserEntity(user);
