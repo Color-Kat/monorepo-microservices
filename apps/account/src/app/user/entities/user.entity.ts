@@ -1,4 +1,8 @@
-import { IUser, IUserCourses, UserRole } from '@monorepo-microservices/interfaces';
+import {
+    IUser,
+    IUserCourses,
+    UserRole,
+} from '@monorepo-microservices/interfaces';
 import { compare, genSalt, hash } from 'bcryptjs';
 
 export class UserEntity implements IUser {
@@ -19,6 +23,14 @@ export class UserEntity implements IUser {
         this.courses = user.courses;
     }
 
+    public getPublicProfile() {
+        return {
+            email: this.email,
+            role: this.role,
+            displayName: this.displayName,
+        }
+    }
+
     /**
      * Generate and set password hash for from password.
      * @param password
@@ -36,5 +48,11 @@ export class UserEntity implements IUser {
      */
     public validatePassword(password: string): Promise<boolean> {
         return compare(password, this.passwordHash);
+    }
+
+    public updateProfile(data: Pick<IUser, 'displayName'>) {
+        this.displayName = data.displayName;
+
+        return this;
     }
 }
