@@ -1,10 +1,12 @@
 import {
+    IDomainEvent,
     IUser,
     IUserCourses,
     PurchaseState,
-    UserRole,
+    UserRole
 } from '@monorepo-microservices/interfaces';
 import { compare, genSalt, hash } from 'bcryptjs';
+import { AccountChangedCourse } from '@monorepo-microservices/contracts';
 
 export class UserEntity implements IUser {
     _id?: string;
@@ -13,6 +15,9 @@ export class UserEntity implements IUser {
     passwordHash: string;
     role: UserRole;
     courses?: IUserCourses[];
+
+    // List of events that should be dispatched when entity changes.
+    events: IDomainEvent[] = [];
 
     constructor(user: IUser) {
         this._id = user._id;
@@ -93,6 +98,15 @@ export class UserEntity implements IUser {
             if (course._id == courseId) course.purchaseState = state;
 
             return course;
+        });
+
+        this.events.push({
+            topic: AccountChangedCourse.topic,
+            data: {
+                userId: this._id,
+                courseId,
+                status: state,
+            },
         });
 
         return this;
