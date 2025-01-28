@@ -66,46 +66,35 @@ export class UserEntity implements IUser {
     }
 
     /**
-     * Add course to user courses.
-     *
-     * @param courseId
-     */
-    public addCourse(courseId: string) {
-        const existingCourse = this.courses.find(
-            (course) => course._id === courseId
-        );
-        if (existingCourse) throw new Error('Course already exists');
-
-        this.courses.push({
-            courseId,
-            purchaseState: PurchaseState.Started,
-        });
-
-        return this;
-    }
-
-    /**
-     * Delete course from user courses.
-     *
-     * @param courseId
-     */
-    public deleteCourse(courseId: string) {
-        this.courses = this.courses.filter((course) => course._id !== courseId);
-
-        return this;
-    }
-
-    /**
      * Change course purchase state
      *
      * @param courseId
      * @param state
      */
-    public updateCoursePurchaceState(courseId: string, state: PurchaseState) {
-        this.courses = this.courses.map(course => {
-            if(course._id == courseId) course.purchaseState = state;
+    public setCoursePurchaseState(courseId: string, state: PurchaseState) {
+        const existingCourse = this.courses.find(
+            (course) => course._id === courseId
+        );
 
-            return course
-        })
+        if (!existingCourse) {
+            this.courses.push({
+                courseId,
+                purchaseState: state,
+            });
+            return this;
+        }
+
+        if (state == PurchaseState.Canceled) {
+            this.courses = this.courses.filter((course) => course._id !== courseId);
+            return this;
+        }
+
+        this.courses = this.courses.map((course) => {
+            if (course._id == courseId) course.purchaseState = state;
+
+            return course;
+        });
+
+        return this;
     }
 }

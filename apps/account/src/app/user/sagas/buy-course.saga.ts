@@ -2,7 +2,13 @@ import { UserEntity } from '../entities/user.entity';
 import { RMQService } from 'nestjs-rmq';
 import { PurchaseState } from '@monorepo-microservices/interfaces';
 import { BuyCourseSagaState } from './buy-course.state';
-import { BuyCourseSagaStateStarted } from './buy-course.steps';
+import {
+    BuyCourseSagaStateCanceled,
+    BuyCourseSagaStatePurchased,
+    BuyCourseSagaStateWaitingForPayment,
+    BuyCourseSagaStateStarted
+} from './buy-course.steps';
+import { Promise } from 'mongoose';
 
 export class BuyCourseSaga {
     private state: BuyCourseSagaState;
@@ -23,10 +29,13 @@ export class BuyCourseSaga {
                 this.state = new BuyCourseSagaStateStarted();
                 break;
             case PurchaseState.WaitingForPayment:
+                this.state = new BuyCourseSagaStateWaitingForPayment();
                 break;
             case PurchaseState.Purchased:
+                this.state = new BuyCourseSagaStatePurchased();
                 break;
             case PurchaseState.Canceled:
+                this.state = new BuyCourseSagaStateCanceled();
                 break;
             default:
                 throw new Error('Invalid purchase state');
@@ -34,6 +43,7 @@ export class BuyCourseSaga {
 
         this.state.setContext(this);
 
-        this.user.updateCoursePurchaceState(courseId, state);
+        this.user.setCoursePurchaseState(courseId, state);
     }
 }
+

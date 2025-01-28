@@ -9,6 +9,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema()
 export class UserCourses extends Document implements IUserCourses {
+    _id: string;
+
     @Prop({ required: true })
     courseId: string;
 

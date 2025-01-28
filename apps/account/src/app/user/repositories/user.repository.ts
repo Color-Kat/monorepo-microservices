@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { User } from '../models/user.model';
-import { Model } from 'mongoose';
+import { AnyObject, Model } from 'mongoose';
 import { UserEntity } from '../entities/user.entity';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -15,7 +15,9 @@ export class UserRepository {
     }
 
     async findUserById(id: string) {
-        return this.userModel.findById(id).exec();
+        return this.userModel
+            .findById(id)
+            .exec();
     }
 
     async createUser(user: UserEntity) {
