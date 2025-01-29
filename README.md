@@ -13,6 +13,13 @@
 
 ## Run tasks
 
+To run the project as one piece, use:
+
+```sh
+docker-compose up -d
+nx run-many -t=serve
+```
+
 To run the dev server for your app, use:
 
 ```sh

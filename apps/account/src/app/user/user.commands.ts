@@ -6,17 +6,12 @@ import {
     AccountChangeProfile,
     AccountCheckPayment,
 } from '@monorepo-microservices/contracts';
-import { NotFoundError } from 'rxjs';
-import { UserEntity } from './entities/user.entity';
-import { BuyCourseSaga } from './sagas/buy-course.saga';
 import { UserService } from './user.service';
 
 @Controller()
 export class UserCommands {
     constructor(
-        private readonly userService: UserService,
-        private readonly userRepository: UserRepository,
-        private readonly rmqService: RMQService
+        private readonly userService: UserService
     ) {}
 
     @RMQRoute(AccountChangeProfile.topic)
