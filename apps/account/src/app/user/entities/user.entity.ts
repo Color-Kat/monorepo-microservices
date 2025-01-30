@@ -78,7 +78,7 @@ export class UserEntity implements IUser {
      */
     public setCoursePurchaseState(courseId: string, state: PurchaseState) {
         const existingCourse = this.courses.find(
-            (course) => course._id === courseId
+            (course) => course.courseId === courseId
         );
 
         if (!existingCourse) {
@@ -90,12 +90,12 @@ export class UserEntity implements IUser {
         }
 
         if (state == PurchaseState.Canceled) {
-            this.courses = this.courses.filter((course) => course._id !== courseId);
+            this.courses = this.courses.filter((course) => course.courseId !== courseId);
             return this;
         }
 
         this.courses = this.courses.map((course) => {
-            if (course._id == courseId) course.purchaseState = state;
+            if (course.courseId == courseId) course.purchaseState = state;
 
             return course;
         });

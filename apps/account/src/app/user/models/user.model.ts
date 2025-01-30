@@ -41,7 +41,7 @@ export class User extends Document implements IUser {
     })
     role: UserRole;
 
-    @Prop({ type: [UserCoursesSchema] })
+    @Prop({ type: [UserCoursesSchema], _id: false })
     courses: Types.Array<UserCourses>;
 }
 

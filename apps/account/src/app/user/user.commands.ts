@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { UserRepository } from './repositories/user.repository';
-import { RMQRoute, RMQService, RMQValidate } from 'nestjs-rmq';
+import { RMQRoute, RMQValidate } from 'nestjs-rmq';
 import {
     AccountBuyCourse,
     AccountChangeProfile,

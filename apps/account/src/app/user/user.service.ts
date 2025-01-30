@@ -1,5 +1,4 @@
 import { Body, Injectable } from '@nestjs/common';
-import { AccountBuyCourse, AccountCheckPayment } from '@monorepo-microservices/contracts';
 import { NotFoundError } from 'rxjs';
 import { UserEntity } from './entities/user.entity';
 import { RMQService } from 'nestjs-rmq';
@@ -7,7 +6,6 @@ import { BuyCourseSaga } from './sagas/buy-course.saga';
 import { IUser } from '@monorepo-microservices/interfaces';
 import { UserRepository } from './repositories/user.repository';
 import { UserEventEmitter } from './user.event-emitter';
-import { Promise } from 'mongoose';
 
 @Injectable()
 export class UserService {
