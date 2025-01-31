@@ -37,6 +37,7 @@ export class UserEntity implements IUser {
             email: this.email,
             role: this.role,
             displayName: this.displayName,
+            courses: this.courses
         };
     }
 

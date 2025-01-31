@@ -5,12 +5,14 @@ import { getMongoConfig } from '../configs/mongo.config';
 import { RMQModule, RMQService, RMQTestService } from 'nestjs-rmq';
 import { INestApplication } from '@nestjs/common';
 import {
-    AccountBuyCourse,
+    AccountBuyCourse, AccountCheckPayment,
     AccountLogin,
     AccountRegister,
     AccountUserInfo,
     CourseGetCourse,
+    PaymentCheck,
     PaymentGenerateLink,
+    PaymentStatus
 } from '@monorepo-microservices/contracts';
 import { UserRepository } from './repositories/user.repository';
 import { UserModule } from './user.module';
@@ -104,6 +106,7 @@ describe('UserController', () => {
             { paymentLink }
         );
 
+        // Buy Course
         const response = await rmqService.triggerRoute<
             AccountBuyCourse.Request,
             AccountBuyCourse.Response
@@ -114,6 +117,7 @@ describe('UserController', () => {
 
         expect(response.paymentLink).toEqual(paymentLink);
 
+        // Buy Course again - error
         await expect(
             rmqService.triggerRoute<
                 AccountBuyCourse.Request,
@@ -124,6 +128,34 @@ describe('UserController', () => {
             })
         ).rejects.toThrowError();
     });
+
+    it('BuyCourse Saga (Payment Check', async () => {
+        // Check Payment (Purchased)
+        rmqService.mockReply<PaymentCheck.Response>(
+            PaymentCheck.topic, {
+                status: PaymentStatus.Purchased
+            }
+        )
+
+        const response2 = await rmqService.triggerRoute<
+            AccountCheckPayment.Request,
+            AccountCheckPayment.Response
+        >(AccountCheckPayment.topic, {
+            courseId,
+            userId,
+        });
+
+        expect(response2.status).toEqual(PaymentStatus.Purchased);
+
+        // Check user courses
+        const response3 = await rmqService.triggerRoute<
+            AccountUserInfo.Request,
+            AccountUserInfo.Response
+        >(AccountUserInfo.topic, { id: userId });
+
+        expect(response3.profile.courses[0].courseId).toEqual(courseId);
+    });
+
 
     afterAll(async () => {
         await userRepository.deleteUser(authRegister.email);
