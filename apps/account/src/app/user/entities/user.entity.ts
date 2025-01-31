@@ -3,7 +3,7 @@ import {
     IUser,
     IUserCourses,
     PurchaseState,
-    UserRole
+    UserRole,
 } from '@monorepo-microservices/interfaces';
 import { compare, genSalt, hash } from 'bcryptjs';
 import { AccountChangedCourse } from '@monorepo-microservices/contracts';
@@ -90,7 +90,9 @@ export class UserEntity implements IUser {
         }
 
         if (state == PurchaseState.Canceled) {
-            this.courses = this.courses.filter((course) => course.courseId !== courseId);
+            this.courses = this.courses.filter(
+                (course) => course.courseId !== courseId
+            );
             return this;
         }
 
@@ -110,5 +112,12 @@ export class UserEntity implements IUser {
         });
 
         return this;
+    }
+
+    public getCourseState(courseId: string): PurchaseState {
+        const course = this.courses.find(
+            (course) => course.courseId === courseId
+        );
+        return course ? course.purchaseState : PurchaseState.Started;
     }
 }
