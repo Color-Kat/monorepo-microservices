@@ -10,6 +10,10 @@ export class UserRepository {
         @InjectModel(User.name) private readonly userModel: Model<User>
     ) {}
 
+    async healthCheck() {
+        return this.userModel.findOne({}).exec();
+    }
+
     async findUserByEmail(email: string) {
         return this.userModel.findOne({email}).exec();
     }
