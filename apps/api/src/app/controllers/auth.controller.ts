@@ -8,6 +8,8 @@ import { RMQRoute, RMQService, RMQValidate } from 'nestjs-rmq';
 import { RegisterDto } from '../dto/register.dto';
 import { LoginDto } from '../dto/login.dto';
 
+import * as uuid from 'uuid';
+
 @Controller('auth')
 export class AuthController {
     constructor(
@@ -21,7 +23,12 @@ export class AuthController {
         try {
             return await this.rmqService.send<AccountRegister.Request, AccountRegister.Response>(
                 AccountRegister.topic,
-                dto
+                dto,
+                {
+                    headers: {
+                        requestId: uuid.v4()
+                    }
+                }
             )
         } catch (error) {
             if(error instanceof Error)
