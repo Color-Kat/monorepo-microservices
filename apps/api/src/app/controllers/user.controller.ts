@@ -7,6 +7,7 @@ import {
 import { RMQRoute, RMQValidate } from 'nestjs-rmq';
 import { JWTAuthGuard } from '../guards/jwt.guard';
 import { UserId } from '../guards/user.decorator';
+import { Cron } from '@nestjs/schedule';
 
 @Controller('users')
 export class UserController {
@@ -20,5 +21,10 @@ export class UserController {
         @UserId() userId: string
     ) {
         return userId;
+    }
+
+    @Cron('*/10 * * * * *')
+    async cron() {
+        // console.log('Cron task is running');
     }
 }
