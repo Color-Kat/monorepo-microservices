@@ -8,6 +8,7 @@ import { AuthModule } from './auth.module';
 import { INestApplication } from '@nestjs/common';
 import { UserRepository } from '../user/repositories/user.repository';
 import { AccountLogin, AccountRegister } from '@monorepo-microservices/contracts';
+import * as process from 'node:process';
 
 const authLogin: AccountLogin.Request = {
     email: "test@aa.aa",
@@ -29,7 +30,8 @@ describe('AuthController', () => {
             imports: [
                 ConfigModule.forRoot({
                     isGlobal: true,
-                    envFilePath: 'envs/.account.env',
+                    // IDK why pwd in tests is different
+                    envFilePath: '../../envs/.account.env',
                 }),
                 MongooseModule.forRootAsync(getMongoConfig()),
                 RMQModule.forTest({}),

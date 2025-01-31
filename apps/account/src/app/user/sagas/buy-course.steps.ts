@@ -7,7 +7,7 @@ import {
     PaymentStatus,
 } from '@monorepo-microservices/contracts';
 import { PurchaseState } from '@monorepo-microservices/interfaces';
-import { Error, Promise } from 'mongoose';
+import { Error } from 'mongoose';
 
 export class BuyCourseSagaStateStarted extends BuyCourseSagaState {
     public async pay(): Promise<{ paymentLink: string; user: UserEntity }> {
