@@ -29,7 +29,8 @@ npx nx serve account
 To create a production bundle:
 
 ```sh
-npx nx build account
+npx nx run-many -t=build
+docker compose up --build
 ```
 
 To see all available targets to run for a project, run:
